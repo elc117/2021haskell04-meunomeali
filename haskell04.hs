@@ -25,11 +25,11 @@ strColor :: (Int,Int,Int) -> String
 strColor tupla = (\(r,g,b) -> "rgb(" ++ show r ++ "," ++ show g ++ "," ++ show b ++ ")") tupla
 
 
---5) Circulos de mesmo tamanho, mesma coord y e coord x aumentando de 4 em 4
+-- 5) Circulos de mesmo tamanho, mesma coord y e coord x aumentando de 4 em 4
 genCircs :: Int -> (Int,Int) -> Int -> [(Int,Int, Int)]
-genCircs numCirc cordInicial raio = map (\x -> (x, ((\(_,cy) -> cy) cordInicial) ,raio)) ((\(cx,cy) -> take numCirc (iterate (4+) cx)) cordInicial)
+genCircs numCirc cordInicial raio = map (\x -> (x, ((\(_,cy) -> cy) cordInicial) ,raio)) $ (\(cx,cy) -> take numCirc (iterate (4+) cx)) cordInicial
 
 
--- 6)
---genReds :: Int -> [(Int,Int,Int)]
---genReds numRepet = (\(r,g,b) -> take numRepet (repeat (r,g,b))
+-- 6) 
+genReds :: Int -> [(Int,Int,Int)]
+genReds numRepet =  map (\red -> (red,0,0) ) $ take numRepet (iterate (10+) 40)
