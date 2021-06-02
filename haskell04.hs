@@ -15,7 +15,6 @@ else "IDO80"
 classifIdosos :: [(String,Int)] -> [(String,Int,String)]
 classifIdosos lTupla = [(str,int,faixa) | (str,int) <- lTupla, let faixa = (faixaIdoso int)]
 
-
 -- 3) Mesmo que anterior, sem list comprehension
 classifIdosos' :: [(String,Int)] -> [(String,Int,String)]
 classifIdosos' lTupla = map (\(str,int) -> (str,int,(faixaIdoso int))) lTupla
@@ -26,4 +25,11 @@ strColor :: (Int,Int,Int) -> String
 strColor tupla = (\(r,g,b) -> "rgb(" ++ show r ++ "," ++ show g ++ "," ++ show b ++ ")") tupla
 
 
---5)
+--5) Circulos de mesmo tamanho, mesma coord y e coord x aumentando de 4 em 4
+genCircs :: Int -> (Int,Int) -> Int -> [(Int,Int, Int)]
+genCircs numCirc cordInicial raio = map (\x -> (x, ((\(_,cy) -> cy) cordInicial) ,raio)) ((\(cx,cy) -> take numCirc (iterate (4+) cx)) cordInicial)
+
+
+-- 6)
+--genReds :: Int -> [(Int,Int,Int)]
+--genReds numRepet = (\(r,g,b) -> take numRepet (repeat (r,g,b))
