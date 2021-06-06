@@ -32,6 +32,6 @@ genCircs numCirc cordInicial raio = map (\x -> (x, ((\(_,cy) -> cy) cordInicial)
 
 -- 6) gerador RGB de tons de vermelho
 genReds :: Int -> [(Int,Int,Int)]
-genReds numRepet =  map (\red -> ( (if red >= 255 then 255 else red),0,0) ) $ take numRepet (iterate (x+) y)
-  where x = 10
-        y = 40
+genReds numRepet =  map (\red -> ( (if red >= 255 then 255 else red),0,0) ) $ take numRepet (iterate (newRed+) firstRed)
+  where newRed = 10
+        firstRed = 40
