@@ -30,6 +30,8 @@ genCircs :: Int -> (Int,Int) -> Int -> [(Int,Int, Int)]
 genCircs numCirc cordInicial raio = map (\x -> (x, ((\(_,cy) -> cy) cordInicial) ,raio)) $ (\(cx,cy) -> take numCirc (iterate (4+) cx)) cordInicial
 
 
--- 6) 
+-- 6) gerador RGB de tons de vermelho
 genReds :: Int -> [(Int,Int,Int)]
-genReds numRepet =  map (\red -> (red,0,0) ) $ take numRepet (iterate (10+) 40)
+genReds numRepet =  map (\red -> ( (if red >= 255 then 255 else red),0,0) ) $ take numRepet (iterate (x+) y)
+  where x = 10
+        y = 40
