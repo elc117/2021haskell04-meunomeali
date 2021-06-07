@@ -21,17 +21,48 @@ greenPalette n = [(0, 80+i*10, 0) | i <- [0..n] ]
 rgbPalette :: Int -> [(Int,Int,Int)]
 rgbPalette n = take n $ cycle [(255,0,0),(0,255,0),(0,0,255)]
 
+-- Paleta tons vermelho
+genReds :: Int -> [(Int,Int,Int)]
+genReds numRepet =  map (\red -> ( (if red >= 255 then 255 else red),0,0) ) $ take (numRepet*numRepet) (iterate (newRed+) firstRed)
+  where newRed = 1
+        firstRed = 1
 
+-- Paleta de branco para vermelho
+genWhite :: Int -> [(Int,Int,Int)]
+genWhite numRepet = map (\white -> (255, (if white>=255 then 0 else (255-white)),(if white>=255 then 0 else (255-white))) ) $ take (numRepet*numRepet) (iterate (newWhite+) firstWhite)
+  where newWhite = 2
+        firstWhite = 0
 
 -------------------------------------------------------------------------------
 -- Geração de retângulos em suas posições
 -------------------------------------------------------------------------------
 
-genRectsInLine :: Int -> [Rect]
-genRectsInLine n  = [((m*(w+gap), 0.0), w, h) | m <- [0..fromIntegral (n-1)]]
+-- preto para vermelho começando em (0,0), indo até (n,n)
+genRectsInLine1 :: Int -> [Rect]
+genRectsInLine1 n  = [((m*(w+gap), x*(w+gap)), w, h) | m <- [0..fromIntegral (n-1)], x <- [0..fromIntegral (n-1)]]
   where (w,h) = (50,50)
         gap = 10
 
+
+
+genRectsInLine2 :: Int -> [Rect]
+genRectsInLine2 n  = [((x*(w+gap), m*(w+gap)), w, h) | m <- [0..fromIntegral (n-1)], x <- [0..fromIntegral (n-1)]]
+  where (w,h) = (50,50)
+        gap = 10
+
+--
+
+-- branco para vermelho começando em (n,n), indo até (0,0)
+genRectsInLine3 :: Int -> [Rect]
+genRectsInLine3 n  = [((m*(w+gap), x*(w+gap)), w, h) | m <- [fromIntegral (n-1), fromIntegral (n-2)..0], x <- [fromIntegral (n-1), fromIntegral (n-2)..0]]
+  where (w,h) = (50,50)
+        gap = 10
+
+
+genRectsInLine4 :: Int -> [Rect]
+genRectsInLine4 n  = [((x*(w+gap), m*(w+gap)), w, h) | m <- [fromIntegral (n-1), fromIntegral (n-2)..0], x <- [fromIntegral (n-1), fromIntegral (n-2)..0]]
+  where (w,h) = (50,50)
+        gap = 10
 
 -------------------------------------------------------------------------------
 -- Strings SVG
@@ -67,13 +98,29 @@ svgElements func elements styles = concat $ zipWith func elements styles
 
 main :: IO ()
 main = do
-  writeFile "rects.svg" $ svgstrs
-  where svgstrs = svgBegin w h ++ svgfigs ++ svgEnd
-        svgfigs = svgElements svgRect rects (map svgStyle palette)
-        rects = genRectsInLine nrects
-        palette = rgbPalette nrects
-        nrects = 10
-        (w,h) = (1500,500) -- width,height da imagem SVG
+  writeFile "figs.svg" $ svgstrs
+  where svgstrs = svgBegin w h ++ svgfigs1 ++ svgfigs2 ++ svgfigs3 ++ svgfigs4 ++ svgEnd
+        -- tons de vermelho
+        svgfigs1 = svgElements svgRect rects1 (map svgStyle palette1)
+        rects1 = genRectsInLine1 nrects
+        palette1 = genReds nrects
+        -- tons de vermelho
+        svgfigs2 = svgElements svgRect rects2 (map svgStyle palette2)
+        rects2 = genRectsInLine2 nrects
+        palette2 = genReds nrects
+
+        -- tons de branco para vermelho
+        svgfigs3 = svgElements svgRect rects3 (map svgStyle palette3)
+        rects3 = genRectsInLine3 nrects
+        palette3 = genWhite nrects
+        -- tons de branco para vermelho
+        svgfigs4 = svgElements svgRect rects4 (map svgStyle palette4)
+        rects4 = genRectsInLine4 nrects
+        palette4 = genWhite nrects
+
+        nrects = 12
+
+        (w,h) = (1000,1000) -- width,height da imagem SVG
 
 
 

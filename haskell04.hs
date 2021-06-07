@@ -32,6 +32,12 @@ genCircs numCirc cordInicial raio = map (\x -> (x, ((\(_,cy) -> cy) cordInicial)
 
 -- 6) gerador RGB de tons de vermelho
 genReds :: Int -> [(Int,Int,Int)]
-genReds numRepet =  map (\red -> ( (if red >= 255 then 255 else red),0,0) ) $ take numRepet (iterate (newRed+) firstRed)
+genReds numRepet =  map (\red -> ( (if red >= 255 then 255 else red),(0),(0) ) ) $ take numRepet (iterate (newRed+) firstRed)
   where newRed = 10
         firstRed = 40
+
+-- tons de branco para vermelho, utilizado em svgPatterns.hs
+--genWhite :: Int -> [(Int,Int,Int)]
+--genWhite numRepet = map (\white -> (255, (if white>=255 then 0 else (255-white)),(if white>=255 then 0 else (255-white))) ) $ take numRepet (iterate (newWhite+) firstWhite)
+  --where newWhite = 10
+    --    firstWhite = 0
